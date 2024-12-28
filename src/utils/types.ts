@@ -24,4 +24,20 @@ export interface History {
   by_who: string;
   reason?: string;
   change_date: string;
+  affected_qty: number;
+}
+
+export interface HistoryView {
+  stock_id: number;
+  by_who: string;
+  reason?: string;
+  change_date: string;
+  affected_qty: number;
+  type_id: number;
+  width: number;
+  length: number;
+  thickness: number;
+  qty: number;
+  last_updated: string;
+  history_id: number;
 }

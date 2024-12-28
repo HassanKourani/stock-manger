@@ -70,6 +70,7 @@ const AddSheetComponent = ({ sheet }: AddSheetComponentProps) => {
         stock_id: sheet?.id ?? 0,
         by_who: "admin",
         reason: values.reason,
+        affected_qty: values.qty,
         change_date: new Date().toISOString(),
       });
     }

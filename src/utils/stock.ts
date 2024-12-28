@@ -1,11 +1,12 @@
 import supabase from "./supabase";
-import { History, Location, Material, Stock } from "./types";
+import { History, HistoryView, Location, Material, Stock } from "./types";
 
 export const getStock = async (params: Record<string, string>) => {
   const query = supabase
     .from("Stock")
     .select("*")
-    .order("last_updated", { ascending: false });
+    .order("last_updated", { ascending: false })
+    .limit(100);
 
   Object.entries(params).forEach(([key, value]) => {
     if (value) {
@@ -55,4 +56,25 @@ export const addHistory = async (history: History) => {
   const { data, error } = await supabase.from("History").insert(history);
   if (error) console.error("Supabase error:", error);
   return data;
+};
+
+export const getHistory = async (
+  params: Record<string, string>
+): Promise<HistoryView[]> => {
+  const query = supabase
+    .from("stock_history_view")
+    .select("*")
+    .order("change_date", { ascending: false })
+    .limit(50);
+
+  Object.entries(params).forEach(([key, value]) => {
+    if (value) {
+      query.eq(key, value);
+    }
+  });
+
+  const { data, error } = await query;
+  if (error) console.error("Supabase error:", error);
+
+  return data || [];
 };

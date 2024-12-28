@@ -1,4 +1,4 @@
-import { Button, InputNumber, Select } from "antd";
+import { Button, Input, Select } from "antd";
 import { ColumnFilterItem } from "antd/es/table/interface";
 import { useSearchParams } from "react-router";
 
@@ -53,9 +53,11 @@ const FilterDropdown = ({
           }))}
         />
       ) : (
-        <InputNumber
-          value={selectedKeys[0] as number}
-          onChange={(value) => setSelectedKeys(value ? [value] : [])}
+        <Input
+          value={selectedKeys[0] as string}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
           onPressEnter={handleFilter}
           style={{ width: 188, marginBottom: 8, display: "block" }}
         />
