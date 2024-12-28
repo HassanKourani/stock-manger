@@ -80,7 +80,7 @@ const AddSheetComponent = ({ sheet }: AddSheetComponentProps) => {
 
   return (
     <>
-      <Button onClick={() => setIsModalOpen(true)}>
+      <Button onClick={() => setIsModalOpen(true)} type="primary">
         {isEdit ? "Edit" : "Add"} Sheet
       </Button>
       <Modal

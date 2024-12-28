@@ -1,17 +1,27 @@
 import { Layout as AntLayout, Breadcrumb, Menu, MenuProps } from "antd";
-import { TableOutlined, LogoutOutlined } from "@ant-design/icons";
+import {
+  TableOutlined,
+  LogoutOutlined,
+  HistoryOutlined,
+} from "@ant-design/icons";
 import { Outlet, useLocation, useNavigate } from "react-router";
+import { useEffect, useState } from "react";
 
 const { Header, Content } = AntLayout;
 
 const labels: MenuProps["items"] = [
   { label: "Stock", key: "/", icon: <TableOutlined /> },
-  { label: "History", key: "/history", icon: <TableOutlined /> },
+  { label: "History", key: "/history", icon: <HistoryOutlined /> },
   { label: "Logout", key: "logout", icon: <LogoutOutlined /> },
 ];
 
 const Layout = () => {
   const { pathname } = useLocation();
+  const [selectedKeys, setSelectedKeys] = useState<string[]>([pathname ?? ""]);
+
+  useEffect(() => {
+    setSelectedKeys([pathname ?? ""]);
+  }, [pathname]);
 
   const navigate = useNavigate();
 
@@ -21,10 +31,12 @@ const Layout = () => {
         <Menu
           theme="dark"
           mode="horizontal"
-          defaultSelectedKeys={[pathname ?? ""]}
+          defaultSelectedKeys={selectedKeys}
+          selectedKeys={selectedKeys}
           items={labels}
           style={{ flex: 1, minWidth: 0 }}
           onSelect={(e) => {
+            setSelectedKeys([e.key]);
             navigate(e.key);
           }}
         />

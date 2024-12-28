@@ -6,12 +6,18 @@ import FilterDropdown from "../components/FilterDropdown";
 import { History as HistoryType, HistoryView } from "../utils/types";
 import { FilterDropdownProps, FilterValue } from "antd/es/table/interface";
 import { TablePaginationConfig } from "antd/es/table";
+import ResetFilterButton from "../components/ResetFilterButton";
+import { StyledButtonContainer, StyledContainer } from "./Home";
 
 const History = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const queryParams = Object.fromEntries(searchParams.entries());
 
-  const { data = [], isLoading } = useQuery({
+  const {
+    data = [],
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["history", queryParams],
     queryFn: () => getHistory(queryParams),
   });
@@ -35,6 +41,11 @@ const History = () => {
     setSearchParams(searchParams);
   };
 
+  const getFilteredValue = (key: string): React.Key[] => {
+    const value = searchParams.get(key);
+    return value ? [value] : [];
+  };
+
   const columns: TableColumnsType<HistoryView> = [
     {
       title: "User",
@@ -42,6 +53,7 @@ const History = () => {
       filterDropdown: (props: FilterDropdownProps) => (
         <FilterDropdown {...props} dataIndex="by_who" />
       ),
+      filteredValue: getFilteredValue("by_who"),
       onFilter: (value, record) =>
         record.by_who.toString().indexOf(value as string) === 0,
     },
@@ -74,6 +86,7 @@ const History = () => {
       filterDropdown: (props: FilterDropdownProps) => (
         <FilterDropdown {...props} dataIndex="reason" />
       ),
+      filteredValue: getFilteredValue("reason"),
       onFilter: (value, record) =>
         record.reason?.toString().indexOf(value as string) === 0,
     },
@@ -88,13 +101,18 @@ const History = () => {
   ];
 
   return (
-    <Table
-      columns={columns}
-      dataSource={data}
-      loading={isLoading || isLoadingMaterials}
-      rowKey="id"
-      onChange={handleTableChange}
-    />
+    <StyledContainer>
+      <StyledButtonContainer>
+        <ResetFilterButton refetch={refetch} />
+      </StyledButtonContainer>
+      <Table
+        columns={columns}
+        dataSource={data}
+        loading={isLoading || isLoadingMaterials}
+        rowKey="id"
+        onChange={handleTableChange}
+      />
+    </StyledContainer>
   );
 };
 
