@@ -35,3 +35,15 @@ export const addStock = async (stock: Stock) => {
   if (error) console.error("Supabase error:", error);
   return data;
 };
+
+export const addMaterial = async (material: Material) => {
+  const { data, error } = await supabase.from("Type").insert(material);
+  if (error) console.error("Supabase error:", error);
+  return data;
+};
+
+export const addLocation = async (location: Location) => {
+  const { data, error } = await supabase.from("Loc").insert(location);
+  if (error) console.error("Supabase error:", error);
+  return data;
+};

@@ -6,11 +6,18 @@ import { Stock } from "../utils/types";
 import { useSearchParams } from "react-router";
 import AddSheetComponent from "../components/AddSheetComponent";
 import styled from "styled-components";
+import AddMaterialComponent from "../components/AddMaterialComponent";
+import AddLocationComponent from "../components/AddLocationComponent";
 
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  gap: 8px;
+`;
+const StyledButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
   gap: 8px;
 `;
 
@@ -113,9 +120,11 @@ const Home = () => {
 
   return (
     <StyledContainer>
-      <div>
+      <StyledButtonContainer>
         <AddSheetComponent />
-      </div>
+        <AddMaterialComponent />
+        <AddLocationComponent />
+      </StyledButtonContainer>
       <Table
         columns={columns}
         dataSource={stock}

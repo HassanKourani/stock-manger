@@ -1,4 +1,4 @@
-import { ConfigProvider } from "antd";
+import { App as AntApp, ConfigProvider } from "antd";
 import { BrowserRouter, Route, Routes } from "react-router";
 import Login from "./pages/login";
 import Layout from "./pages/Layout";
@@ -14,15 +14,17 @@ function App() {
         },
       }}
     >
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Login />}>
-            <Route path="" element={<Layout />}>
-              <Route path="" index element={<Home />} />
+      <AntApp>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Login />}>
+              <Route path="" element={<Layout />}>
+                <Route path="" index element={<Home />} />
+              </Route>
             </Route>
-          </Route>
-        </Routes>
-      </BrowserRouter>
+          </Routes>
+        </BrowserRouter>
+      </AntApp>
     </ConfigProvider>
   );
 }
