@@ -116,6 +116,8 @@ const Home = () => {
       dataSource={stock}
       onChange={() => {}}
       showSorterTooltip={{ target: "sorter-icon" }}
+      rowKey={(record) => record.id.toString()}
+      scroll={{ x: true }}
     />
   );
 };
