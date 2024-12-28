@@ -1,5 +1,5 @@
 import supabase from "./supabase";
-import { Location, Material } from "./types";
+import { Location, Material, Stock } from "./types";
 
 export const getStock = async (params: Record<string, string>) => {
   const query = supabase.from("Stock").select("*");
@@ -29,3 +29,9 @@ export async function getMaterials(): Promise<Material[]> {
   };
   return data;
 }
+
+export const addStock = async (stock: Stock) => {
+  const { data, error } = await supabase.from("Stock").insert(stock);
+  if (error) console.error("Supabase error:", error);
+  return data;
+};

@@ -1,5 +1,5 @@
 export interface Stock {
-  id: number;
+  id?: number;
   type_id: number;
   width: number;
   length: number;
@@ -9,11 +9,11 @@ export interface Stock {
 }
 
 export interface Location {
-  id: number;
+  id?: number;
   loc_name: string;
 }
 
 export interface Material {
-  id: number;
+  id?: number;
   name: string;
 }

@@ -1,50 +1,47 @@
+import { useQuery } from "@tanstack/react-query";
 import { Table, TableColumnsType } from "antd";
 import FilterDropdown from "../components/FilterDropdown";
-import { useEffect, useState } from "react";
 import { getLocations, getMaterials, getStock } from "../utils/stock";
 import { Stock } from "../utils/types";
 import { useSearchParams } from "react-router";
+import AddSheetComponent from "../components/AddSheetComponent";
+import styled from "styled-components";
+
+const StyledContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+`;
 
 const Home = () => {
-  const [locations, setLocations] = useState<{ value: number; text: string }[]>(
-    []
-  );
-  const [materials, setMaterials] = useState<{ value: number; text: string }[]>(
-    []
-  );
-
-  const [stock, setStock] = useState<Stock[]>([]);
   const [searchParams] = useSearchParams();
+  const queryParams = Object.fromEntries(searchParams.entries());
 
-  useEffect(() => {
-    const fetchLocations = async () => {
-      const locations = await getLocations();
-      setLocations(
-        locations.map((location) => ({
-          text: location.loc_name,
-          value: location.id,
-        }))
-      );
-    };
+  const { data: locations = [] } = useQuery({
+    queryKey: ["locations"],
+    queryFn: getLocations,
+  });
 
-    const fetchMaterials = async () => {
-      const materials = await getMaterials();
-      setMaterials(
-        materials.map((material) => ({
-          text: material.name,
-          value: material.id,
-        }))
-      );
-    };
+  const { data: materials = [] } = useQuery({
+    queryKey: ["materials"],
+    queryFn: getMaterials,
+  });
 
-    const fetchStock = async () => {
-      const queryParams = Object.fromEntries(searchParams.entries());
-      const stock = await getStock(queryParams);
-      setStock(stock);
-    };
+  const { data: stock = [] } = useQuery({
+    queryKey: ["stock", queryParams],
+    queryFn: () => getStock(queryParams),
+  });
 
-    Promise.all([fetchLocations(), fetchMaterials(), fetchStock()]);
-  }, [searchParams]);
+  const formattedLocations = locations.map((location) => ({
+    text: location.loc_name,
+    value: location.id ?? 0,
+  }));
+
+  const formattedMaterials = materials.map((material) => ({
+    text: material.name,
+    value: material.id ?? 0,
+  }));
 
   const columns: TableColumnsType<Stock> = [
     {
@@ -53,9 +50,11 @@ const Home = () => {
       filterDropdown: (props) => (
         <FilterDropdown {...props} dataIndex="type_id" />
       ),
-      filters: materials,
+      filters: formattedMaterials,
       render: (value) => {
-        const material = materials.find((material) => material.value === value);
+        const material = formattedMaterials.find(
+          (material) => material.value === value
+        );
         return material ? material.text : value;
       },
       onFilter: (value, record) =>
@@ -94,9 +93,11 @@ const Home = () => {
       filterDropdown: (props) => (
         <FilterDropdown {...props} dataIndex="location_id" />
       ),
-      filters: locations,
+      filters: formattedLocations,
       render: (value) => {
-        const location = locations.find((location) => location.value === value);
+        const location = formattedLocations.find(
+          (location) => location.value === value
+        );
         return location ? location.text : value;
       },
       onFilter: (value, record) =>
@@ -111,14 +112,19 @@ const Home = () => {
   ];
 
   return (
-    <Table
-      columns={columns}
-      dataSource={stock}
-      onChange={() => {}}
-      showSorterTooltip={{ target: "sorter-icon" }}
-      rowKey={(record) => record.id.toString()}
-      scroll={{ x: true }}
-    />
+    <StyledContainer>
+      <div>
+        <AddSheetComponent />
+      </div>
+      <Table
+        columns={columns}
+        dataSource={stock}
+        onChange={() => {}}
+        showSorterTooltip={{ target: "sorter-icon" }}
+        rowKey={(record) => record.id?.toString() ?? ""}
+        scroll={{ x: true, y: "calc(100vh - 100px)" }}
+      />
+    </StyledContainer>
   );
 };
 
