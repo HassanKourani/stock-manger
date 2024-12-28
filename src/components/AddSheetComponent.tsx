@@ -68,7 +68,7 @@ const AddSheetComponent = ({ sheet }: AddSheetComponentProps) => {
     if (isEdit) {
       addHistory({
         stock_id: sheet?.id ?? 0,
-        by_who: "admin",
+        by_who: localStorage.getItem("email") ?? "",
         reason: values.reason,
         affected_qty: values.qty,
         change_date: new Date().toISOString(),

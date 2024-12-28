@@ -22,6 +22,7 @@ function App() {
               <Route path="" element={<Layout />}>
                 <Route path="" index element={<Home />} />
                 <Route path="history" element={<History />} />
+                <Route path="logout" element={<>YOU ARE LOGGED OUT</>} />
               </Route>
             </Route>
           </Routes>

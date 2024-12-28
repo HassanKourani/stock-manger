@@ -193,7 +193,7 @@ const Home = () => {
         onChange={handleTableChange}
         showSorterTooltip={{ target: "sorter-icon" }}
         rowKey={(record) => record.id?.toString() ?? ""}
-        scroll={{ x: true, y: "calc(100vh - 100px)" }}
+        scroll={{ x: true, y: "calc(70vh - 100px)" }}
         loading={isLoadingLocations || isLoadingMaterials || isLoadingStock}
       />
     </StyledContainer>

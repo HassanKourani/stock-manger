@@ -6,8 +6,11 @@ import { Session } from "@supabase/supabase-js";
 import { Outlet } from "react-router";
 import styled from "styled-components";
 
-const StyledAuth = styled(Auth)`
-  width: 2000px;
+const StyledAuth = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 `;
 
 const Login = () => {
@@ -24,12 +27,25 @@ const Login = () => {
       setSession(session);
     });
 
+    localStorage.setItem("email", session?.user?.email ?? "");
+
     return () => subscription.unsubscribe();
-  }, []);
+  }, [session?.user?.email]);
 
   if (!session) {
     return (
-      <StyledAuth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} />
+      <StyledAuth>
+        <Auth
+          supabaseClient={supabase}
+          appearance={{
+            theme: ThemeSupa,
+
+            style: {
+              container: { width: "500px" },
+            },
+          }}
+        />
+      </StyledAuth>
     );
   } else {
     return <Outlet />;

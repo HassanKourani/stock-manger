@@ -6,6 +6,7 @@ import {
 } from "@ant-design/icons";
 import { Outlet, useLocation, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
+import supabase from "../utils/supabase";
 
 const { Header, Content } = AntLayout;
 
@@ -17,13 +18,33 @@ const labels: MenuProps["items"] = [
 
 const Layout = () => {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
+
   const [selectedKeys, setSelectedKeys] = useState<string[]>([pathname ?? ""]);
 
   useEffect(() => {
     setSelectedKeys([pathname ?? ""]);
   }, [pathname]);
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    const checkSession = async () => {
+      const session = await supabase.auth.getSession();
+      if (!session.data.session?.access_token) {
+        navigate("/");
+        localStorage.removeItem("email");
+      }
+    };
+    checkSession();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (pathname === "/logout") {
+      supabase.auth.signOut().then(() => {
+        navigate("/");
+      });
+    }
+  }, [navigate, pathname]);
 
   return (
     <AntLayout style={{ minHeight: "100vh" }}>
