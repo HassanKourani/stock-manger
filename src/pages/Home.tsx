@@ -25,17 +25,17 @@ const Home = () => {
   const [searchParams] = useSearchParams();
   const queryParams = Object.fromEntries(searchParams.entries());
 
-  const { data: locations = [] } = useQuery({
+  const { data: locations = [], isLoading: isLoadingLocations } = useQuery({
     queryKey: ["locations"],
     queryFn: getLocations,
   });
 
-  const { data: materials = [] } = useQuery({
+  const { data: materials = [], isLoading: isLoadingMaterials } = useQuery({
     queryKey: ["materials"],
     queryFn: getMaterials,
   });
 
-  const { data: stock = [] } = useQuery({
+  const { data: stock = [], isLoading: isLoadingStock } = useQuery({
     queryKey: ["stock", queryParams],
     queryFn: () => getStock(queryParams),
   });
@@ -116,6 +116,18 @@ const Home = () => {
       sorter: (a, b) => a.qty - b.qty,
       sortDirections: ["descend"],
     },
+
+    {
+      title: "Last Updated",
+      dataIndex: "last_updated",
+      render: (value) => new Date(value).toLocaleString(),
+      width: "200px",
+    },
+    {
+      title: "Action",
+      render: (_, record) => <AddSheetComponent sheet={record} />,
+      width: "50px",
+    },
   ];
 
   return (
@@ -132,6 +144,7 @@ const Home = () => {
         showSorterTooltip={{ target: "sorter-icon" }}
         rowKey={(record) => record.id?.toString() ?? ""}
         scroll={{ x: true, y: "calc(100vh - 100px)" }}
+        loading={isLoadingLocations || isLoadingMaterials || isLoadingStock}
       />
     </StyledContainer>
   );

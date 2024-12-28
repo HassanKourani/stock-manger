@@ -11,6 +11,7 @@ const Rule = {
 const AddMaterialComponent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const queryClient = useQueryClient();
+  const [form] = Form.useForm();
 
   const addMaterialMutation = useMutation({
     mutationFn: addMaterial,
@@ -18,6 +19,7 @@ const AddMaterialComponent = () => {
       message.success("Material added successfully");
       queryClient.invalidateQueries({ queryKey: ["materials"] });
       setIsModalOpen(false);
+      form.resetFields();
     },
     onError: () => {
       message.error("Failed to add material");
@@ -33,13 +35,18 @@ const AddMaterialComponent = () => {
       <Button onClick={() => setIsModalOpen(true)}>Add Material</Button>
       <Modal
         open={isModalOpen}
-        onCancel={() => setIsModalOpen(false)}
+        onCancel={() => {
+          setIsModalOpen(false);
+          form.resetFields();
+        }}
         footer={null}
       >
         <Form
           layout="vertical"
           onFinish={handleSubmit}
           initialValues={{ name: "" }}
+          form={form}
+          autoComplete="off"
         >
           <Form.Item label="Material" name="name" rules={[Rule]}>
             <Input />

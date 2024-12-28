@@ -1,8 +1,11 @@
 import supabase from "./supabase";
-import { Location, Material, Stock } from "./types";
+import { History, Location, Material, Stock } from "./types";
 
 export const getStock = async (params: Record<string, string>) => {
-  const query = supabase.from("Stock").select("*");
+  const query = supabase
+    .from("Stock")
+    .select("*")
+    .order("last_updated", { ascending: false });
 
   Object.entries(params).forEach(([key, value]) => {
     if (value) {
@@ -44,6 +47,12 @@ export const addMaterial = async (material: Material) => {
 
 export const addLocation = async (location: Location) => {
   const { data, error } = await supabase.from("Loc").insert(location);
+  if (error) console.error("Supabase error:", error);
+  return data;
+};
+
+export const addHistory = async (history: History) => {
+  const { data, error } = await supabase.from("History").insert(history);
   if (error) console.error("Supabase error:", error);
   return data;
 };

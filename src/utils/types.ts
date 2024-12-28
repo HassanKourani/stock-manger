@@ -17,3 +17,11 @@ export interface Material {
   id?: number;
   name: string;
 }
+
+export interface History {
+  id?: number;
+  stock_id: number;
+  by_who: string;
+  reason?: string;
+  change_date: string;
+}
