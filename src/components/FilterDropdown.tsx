@@ -46,7 +46,7 @@ const FilterDropdown = ({
         <Select
           value={selectedKeys[0]}
           onChange={(value) => setSelectedKeys(value ? [value] : [])}
-          style={{ width: 188, marginBottom: 8, display: "block" }}
+          style={{ width: 250, marginBottom: 8, display: "block" }}
           options={filters?.map((filter) => ({
             label: filter.text,
             value: filter.value,

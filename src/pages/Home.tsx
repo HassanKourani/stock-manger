@@ -17,6 +17,20 @@ export const StyledContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   gap: 8px;
+
+  .alternating-columns {
+    .ant-table-thead > tr > th {
+      background-color: #0084b9;
+      color: white;
+    }
+
+    .ant-table-tbody > tr > td:nth-child(odd) {
+      background-color: #fafafa;
+    }
+    .ant-table-tbody > tr > td:nth-child(even) {
+      background-color: #ffffff;
+    }
+  }
 `;
 export const StyledButtonContainer = styled.div`
   display: flex;
@@ -100,6 +114,7 @@ const Home = () => {
       },
       onFilter: (value, record) =>
         record.type_id.toString().indexOf(value as string) === 0,
+      width: "200px",
     },
     {
       title: "Width",
@@ -110,6 +125,7 @@ const Home = () => {
       filteredValue: getFilteredValue("width"),
       onFilter: (value, record) =>
         record.width.toString().indexOf(value as string) === 0,
+      width: "100px",
     },
     {
       title: "Height",
@@ -120,6 +136,7 @@ const Home = () => {
       filteredValue: getFilteredValue("length"),
       onFilter: (value, record) =>
         record.length.toString().indexOf(value as string) === 0,
+      width: "100px",
     },
     {
       title: "Thickness",
@@ -130,6 +147,7 @@ const Home = () => {
       filteredValue: getFilteredValue("thickness"),
       onFilter: (value, record) =>
         record.thickness.toString().indexOf(value as string) === 0,
+      width: "120px",
     },
     {
       title: "Location",
@@ -147,12 +165,14 @@ const Home = () => {
       },
       onFilter: (value, record) =>
         record.location_id.toString().indexOf(value as string) === 0,
+      width: "120px",
     },
     {
       title: "Quantity",
       dataIndex: "qty",
       sorter: (a, b) => a.qty - b.qty,
       sortDirections: ["descend"],
+      width: "100px",
     },
 
     {
@@ -175,7 +195,8 @@ const Home = () => {
           </Button>
         </StyledActionButtons>
       ),
-      width: "50px",
+      width: "200px",
+      fixed: "right",
     },
   ];
 
@@ -193,8 +214,9 @@ const Home = () => {
         onChange={handleTableChange}
         showSorterTooltip={{ target: "sorter-icon" }}
         rowKey={(record) => record.id?.toString() ?? ""}
-        scroll={{ x: true, y: "calc(70vh - 100px)" }}
+        scroll={{ x: 500, y: "calc(70vh - 100px)" }}
         loading={isLoadingLocations || isLoadingMaterials || isLoadingStock}
+        className="alternating-columns"
       />
     </StyledContainer>
   );

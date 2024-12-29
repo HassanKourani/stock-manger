@@ -111,6 +111,7 @@ const History = () => {
         loading={isLoading || isLoadingMaterials}
         rowKey="id"
         onChange={handleTableChange}
+        className="alternating-columns"
       />
     </StyledContainer>
   );
