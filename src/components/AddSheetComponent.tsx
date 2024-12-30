@@ -1,10 +1,11 @@
 import { App, Button, Form, Input, Modal, Select } from "antd";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   addHistory,
   addStock,
   getLocations,
   getMaterials,
+  updateStock,
 } from "../utils/stock";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Stock } from "../utils/types";
@@ -38,11 +39,21 @@ const AddSheetComponent = ({ sheet }: AddSheetComponentProps) => {
     onSuccess: () => {
       message.success("Sheet added successfully");
       queryClient.invalidateQueries({ queryKey: ["stock"] });
-      setIsModalOpen(false);
       form.resetFields();
+      setIsModalOpen(false);
     },
     onError: () => {
       message.error("Failed to add sheet");
+    },
+  });
+
+  const updateSheetMutation = useMutation({
+    mutationFn: updateStock,
+    onSuccess: () => {
+      message.success("Sheet updated successfully");
+      queryClient.invalidateQueries({ queryKey: ["stock"] });
+      form.resetFields();
+      setIsModalOpen(false);
     },
   });
 
@@ -66,6 +77,7 @@ const AddSheetComponent = ({ sheet }: AddSheetComponentProps) => {
     reason?: string;
   }) => {
     if (isEdit) {
+      updateSheetMutation.mutate({ ...values, id: sheet?.id });
       addHistory({
         stock_id: sheet?.id ?? 0,
         by_who: localStorage.getItem("email") ?? "",
@@ -73,10 +85,25 @@ const AddSheetComponent = ({ sheet }: AddSheetComponentProps) => {
         affected_qty: values.qty,
         change_date: new Date().toISOString(),
       });
+    } else {
+      delete values.reason;
+      addSheetMutation.mutate(values);
     }
-    delete values.reason;
-    addSheetMutation.mutate(values);
   };
+
+  useEffect(() => {
+    if (isModalOpen && sheet) {
+      form.setFieldsValue({
+        type_id: sheet.type_id,
+        width: sheet.width,
+        length: sheet.length,
+        thickness: sheet.thickness,
+        location_id: sheet.location_id,
+        qty: null,
+        reason: null,
+      });
+    }
+  }, [isModalOpen, sheet, form]);
 
   return (
     <>
@@ -90,36 +117,28 @@ const AddSheetComponent = ({ sheet }: AddSheetComponentProps) => {
           form.resetFields();
         }}
         footer={null}
+        destroyOnClose={true}
       >
         <Form
           layout="vertical"
           onFinish={handleSubmit}
-          initialValues={{
-            type_id: sheet?.type_id ?? null,
-            width: sheet?.width ?? null,
-            length: sheet?.length ?? null,
-            thickness: sheet?.thickness ?? null,
-            location_id: sheet?.location_id ?? null,
-            qty: null,
-            reason: null,
-          }}
           form={form}
           autoComplete="off"
         >
           <Form.Item label="Material" name="type_id" rules={[Rule]}>
-            <Select options={formattedMaterials} disabled={isEdit} />
+            <Select options={formattedMaterials} />
           </Form.Item>
           <Form.Item label="Width" name="width" rules={[Rule]}>
-            <Input disabled={isEdit} />
+            <Input />
           </Form.Item>
           <Form.Item label="Length" name="length" rules={[Rule]}>
-            <Input disabled={isEdit} />
+            <Input />
           </Form.Item>
           <Form.Item label="Thickness" name="thickness" rules={[Rule]}>
-            <Input disabled={isEdit} />
+            <Input />
           </Form.Item>
           <Form.Item label="Location" name="location_id" rules={[Rule]}>
-            <Select options={formattedLocations} disabled={isEdit} />
+            <Select options={formattedLocations} />
           </Form.Item>
           <Form.Item label="Quantity" name="qty" rules={[Rule]}>
             <Input />

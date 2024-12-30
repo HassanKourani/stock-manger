@@ -109,7 +109,7 @@ const History = () => {
         columns={columns}
         dataSource={data}
         loading={isLoading || isLoadingMaterials}
-        rowKey="id"
+        rowKey="history_id"
         onChange={handleTableChange}
         className="alternating-columns"
       />

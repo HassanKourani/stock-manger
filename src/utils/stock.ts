@@ -78,3 +78,39 @@ export const getHistory = async (
 
   return data || [];
 };
+
+export const updateStock = async (stock: Stock) => {
+  // get the current stock
+  const { data: currentStock } = await supabase
+    .from("Stock")
+    .select("qty")
+    .eq("id", stock.id)
+    .single();
+
+  if (!currentStock) {
+    throw new Error("Stock not found");
+  }
+
+  // Calculate new quantity
+  const newQty = Number(currentStock.qty) + Number(stock.qty);
+
+  // Update with the new calculated quantity
+  const { data, error } = await supabase.from("Stock").upsert({
+    id: stock.id,
+    type_id: stock.type_id,
+    width: stock.width,
+    length: stock.length,
+    thickness: stock.thickness,
+    location_id: stock.location_id,
+    qty: newQty,
+    last_updated: new Date().toISOString(),
+  });
+
+  if (error) console.error("Supabase error:", error);
+  return data;
+};
+
+export const getStockById = async (id: string) => {
+  const { data } = await supabase.from("Stock").select().eq("id", id).single();
+  return data;
+};
