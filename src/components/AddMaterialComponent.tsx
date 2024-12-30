@@ -21,8 +21,8 @@ const AddMaterialComponent = () => {
       setIsModalOpen(false);
       form.resetFields();
     },
-    onError: () => {
-      message.error("Failed to add material");
+    onError: (error) => {
+      message.error(error.message);
     },
   });
 

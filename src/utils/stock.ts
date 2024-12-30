@@ -15,7 +15,7 @@ export const getStock = async (params: Record<string, string>) => {
   });
 
   const { data, error } = await query;
-  if (error) console.error("Supabase error:", error);
+  if (error) throw new Error(error.message);
 
   return data || [];
 };
@@ -36,25 +36,25 @@ export async function getMaterials(): Promise<Material[]> {
 
 export const addStock = async (stock: Stock) => {
   const { data, error } = await supabase.from("Stock").insert(stock);
-  if (error) console.error("Supabase error:", error);
+  if (error) throw new Error(error.message);
   return data;
 };
 
 export const addMaterial = async (material: Material) => {
   const { data, error } = await supabase.from("Type").insert(material);
-  if (error) console.error("Supabase error:", error);
+  if (error) throw new Error(error.message);
   return data;
 };
 
 export const addLocation = async (location: Location) => {
   const { data, error } = await supabase.from("Loc").insert(location);
-  if (error) console.error("Supabase error:", error);
+  if (error) throw new Error(error.message);
   return data;
 };
 
 export const addHistory = async (history: History) => {
   const { data, error } = await supabase.from("History").insert(history);
-  if (error) console.error("Supabase error:", error);
+  if (error) throw new Error(error.message);
   return data;
 };
 
@@ -74,7 +74,7 @@ export const getHistory = async (
   });
 
   const { data, error } = await query;
-  if (error) console.error("Supabase error:", error);
+  if (error) throw new Error(error.message);
 
   return data || [];
 };
@@ -106,7 +106,7 @@ export const updateStock = async (stock: Stock) => {
     last_updated: new Date().toISOString(),
   });
 
-  if (error) console.error("Supabase error:", error);
+  if (error) throw new Error(error.message);
   return data;
 };
 

@@ -20,6 +20,9 @@ const AddLocationComponent = () => {
       setIsModalOpen(false);
       form.resetFields();
     },
+    onError: (error) => {
+      message.error(error.message);
+    },
   });
 
   const handleSubmit = (values: { loc_name: string }) => {
