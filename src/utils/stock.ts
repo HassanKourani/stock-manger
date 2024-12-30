@@ -103,7 +103,6 @@ export const updateStock = async (stock: Stock) => {
     thickness: stock.thickness,
     location_id: stock.location_id,
     qty: newQty,
-    last_updated: new Date().toISOString(),
   });
 
   if (error) throw new Error(error.message);

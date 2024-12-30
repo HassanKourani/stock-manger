@@ -95,7 +95,8 @@ const History = () => {
       dataIndex: "change_date",
       render: (value: string) => new Date(value).toLocaleString(),
       sorter: (a: HistoryType, b: HistoryType) =>
-        new Date(a.change_date).getTime() - new Date(b.change_date).getTime(),
+        new Date(a?.change_date ?? "").getTime() -
+        new Date(b?.change_date ?? "").getTime(),
       sortDirections: ["descend", "ascend"],
     },
   ];

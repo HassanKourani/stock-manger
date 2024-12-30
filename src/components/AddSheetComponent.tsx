@@ -83,7 +83,6 @@ const AddSheetComponent = ({ sheet }: AddSheetComponentProps) => {
         by_who: localStorage.getItem("email") ?? "",
         reason: values.reason,
         affected_qty: values.qty,
-        change_date: new Date().toISOString(),
       });
     } else {
       delete values.reason;
