@@ -8,6 +8,7 @@ import { FilterDropdownProps, FilterValue } from "antd/es/table/interface";
 import { TablePaginationConfig } from "antd/es/table";
 import ResetFilterButton from "../components/ResetFilterButton";
 import { StyledButtonContainer, StyledContainer } from "./Home";
+import { FilterFilled } from "@ant-design/icons";
 
 const History = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -54,6 +55,9 @@ const History = () => {
         <FilterDropdown {...props} dataIndex="by_who" />
       ),
       filteredValue: getFilteredValue("by_who"),
+      filterIcon: (filtered) => (
+        <FilterFilled style={{ color: filtered ? "#ffffff" : undefined }} />
+      ),
       onFilter: (value, record) =>
         record.by_who.toString().indexOf(value as string) === 0,
     },
@@ -87,6 +91,9 @@ const History = () => {
         <FilterDropdown {...props} dataIndex="reason" />
       ),
       filteredValue: getFilteredValue("reason"),
+      filterIcon: (filtered) => (
+        <FilterFilled style={{ color: filtered ? "#ffffff" : undefined }} />
+      ),
       onFilter: (value, record) =>
         record.reason?.toString().indexOf(value as string) === 0,
     },

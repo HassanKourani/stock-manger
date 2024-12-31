@@ -11,6 +11,7 @@ import AddLocationComponent from "../components/AddLocationComponent";
 import { HistoryOutlined } from "@ant-design/icons";
 import ResetFilterButton from "../components/ResetFilterButton";
 import { FilterValue } from "antd/es/table/interface";
+import { FilterFilled } from "@ant-design/icons";
 
 export const StyledContainer = styled.div`
   display: flex;
@@ -106,6 +107,9 @@ const Home = () => {
       ),
       filters: formattedMaterials,
       filteredValue: getFilteredValue("type_id"),
+      filterIcon: (filtered) => (
+        <FilterFilled style={{ color: filtered ? "#ffffff" : undefined }} />
+      ),
       render: (value) => {
         const material = formattedMaterials.find(
           (material) => material.value === value
@@ -123,6 +127,9 @@ const Home = () => {
         <FilterDropdown {...props} dataIndex="width" />
       ),
       filteredValue: getFilteredValue("width"),
+      filterIcon: (filtered) => (
+        <FilterFilled style={{ color: filtered ? "#ffffff" : undefined }} />
+      ),
       onFilter: (value, record) =>
         record.width.toString().indexOf(value as string) === 0,
       width: "100px",
@@ -134,6 +141,9 @@ const Home = () => {
         <FilterDropdown {...props} dataIndex="length" />
       ),
       filteredValue: getFilteredValue("length"),
+      filterIcon: (filtered) => (
+        <FilterFilled style={{ color: filtered ? "#ffffff" : undefined }} />
+      ),
       onFilter: (value, record) =>
         record.length.toString().indexOf(value as string) === 0,
       width: "100px",
@@ -145,6 +155,9 @@ const Home = () => {
         <FilterDropdown {...props} dataIndex="thickness" />
       ),
       filteredValue: getFilteredValue("thickness"),
+      filterIcon: (filtered) => (
+        <FilterFilled style={{ color: filtered ? "#ffffff" : undefined }} />
+      ),
       onFilter: (value, record) =>
         record.thickness.toString().indexOf(value as string) === 0,
       width: "120px",
@@ -157,6 +170,9 @@ const Home = () => {
       ),
       filters: formattedLocations,
       filteredValue: getFilteredValue("location_id"),
+      filterIcon: (filtered) => (
+        <FilterFilled style={{ color: filtered ? "#ffffff" : undefined }} />
+      ),
       render: (value) => {
         const location = formattedLocations.find(
           (location) => location.value === value
@@ -217,6 +233,9 @@ const Home = () => {
         scroll={{ x: 500, y: "calc(70vh - 100px)" }}
         loading={isLoadingLocations || isLoadingMaterials || isLoadingStock}
         className="alternating-columns"
+        style={{
+          fontWeight: "bold",
+        }}
       />
     </StyledContainer>
   );
