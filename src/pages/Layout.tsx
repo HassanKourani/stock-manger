@@ -3,6 +3,7 @@ import {
   TableOutlined,
   LogoutOutlined,
   HistoryOutlined,
+  ProfileOutlined,
 } from "@ant-design/icons";
 import { Outlet, useLocation, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
@@ -13,6 +14,7 @@ const { Header, Content } = AntLayout;
 const labels: MenuProps["items"] = [
   { label: "Stock", key: "/", icon: <TableOutlined /> },
   { label: "History", key: "/history", icon: <HistoryOutlined /> },
+  { label: "Material", key: "/material", icon: <ProfileOutlined /> },
   { label: "Logout", key: "logout", icon: <LogoutOutlined /> },
 ];
 

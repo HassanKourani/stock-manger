@@ -113,3 +113,15 @@ export const getStockById = async (id: string) => {
   const { data } = await supabase.from("Stock").select().eq("id", id).single();
   return data;
 };
+
+export const updateMaterial = async (material: Material) => {
+  const { data, error } = await supabase.from("Type").upsert(material);
+  if (error) throw new Error(error.message);
+  return data;
+};
+
+export const deleteMaterial = async (id: string) => {
+  const { data, error } = await supabase.from("Type").delete().eq("id", id);
+  if (error) throw new Error(error.message);
+  return data;
+};

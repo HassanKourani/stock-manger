@@ -51,6 +51,9 @@ const FilterDropdown = ({
             label: filter.text,
             value: filter.value,
           }))}
+          showSearch
+          optionFilterProp="label"
+          allowClear
         />
       ) : (
         <Input

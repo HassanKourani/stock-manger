@@ -4,6 +4,7 @@ import Login from "./pages/login";
 import Layout from "./pages/Layout";
 import Home from "./pages/Home";
 import History from "./pages/History";
+import Material from "./pages/Material";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
               <Route path="" element={<Layout />}>
                 <Route path="" index element={<Home />} />
                 <Route path="history" element={<History />} />
+                <Route path="material" element={<Material />} />
                 <Route path="logout" element={<>YOU ARE LOGGED OUT</>} />
               </Route>
             </Route>

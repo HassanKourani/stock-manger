@@ -125,7 +125,11 @@ const AddSheetComponent = ({ sheet }: AddSheetComponentProps) => {
           autoComplete="off"
         >
           <Form.Item label="Material" name="type_id" rules={[Rule]}>
-            <Select options={formattedMaterials} />
+            <Select
+              options={formattedMaterials}
+              showSearch
+              optionFilterProp="label"
+            />
           </Form.Item>
           <Form.Item label="Width" name="width" rules={[Rule]}>
             <Input />
@@ -137,7 +141,11 @@ const AddSheetComponent = ({ sheet }: AddSheetComponentProps) => {
             <Input />
           </Form.Item>
           <Form.Item label="Location" name="location_id" rules={[Rule]}>
-            <Select options={formattedLocations} />
+            <Select
+              options={formattedLocations}
+              showSearch
+              optionFilterProp="label"
+            />
           </Form.Item>
           <Form.Item label="Quantity" name="qty" rules={[Rule]}>
             <Input />
