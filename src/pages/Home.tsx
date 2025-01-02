@@ -20,6 +20,7 @@ export const StyledContainer = styled.div`
   gap: 8px;
 
   .alternating-columns {
+    font-weight: bold;
     .ant-table-thead > tr > th {
       background-color: #0084b9;
       color: white;
@@ -233,9 +234,6 @@ const Home = () => {
         scroll={{ x: 500, y: "calc(70vh - 100px)" }}
         loading={isLoadingLocations || isLoadingMaterials || isLoadingStock}
         className="alternating-columns"
-        style={{
-          fontWeight: "bold",
-        }}
       />
     </StyledContainer>
   );
