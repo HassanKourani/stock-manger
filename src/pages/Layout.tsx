@@ -13,6 +13,7 @@ const { Header, Content } = AntLayout;
 
 const labels: MenuProps["items"] = [
   { label: "Stock", key: "/", icon: <TableOutlined /> },
+  { label: "Summary", key: "/summary", icon: <ProfileOutlined /> },
   { label: "History", key: "/history", icon: <HistoryOutlined /> },
   { label: "Material", key: "/material", icon: <ProfileOutlined /> },
   { label: "Logout", key: "logout", icon: <LogoutOutlined /> },

@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import History from "./pages/History";
 import Material from "./pages/Material";
 import { App as AntApp, ConfigProvider } from "antd";
+import Summary from "./pages/Summary";
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
             <Route path="/" element={<Login />}>
               <Route element={<Layout />}>
                 <Route index element={<Home />} />
+                <Route path="summary" element={<Summary />} />
                 <Route path="history" element={<History />} />
                 <Route path="material" element={<Material />} />
                 <Route path="logout" element={<>YOU ARE LOGGED OUT</>} />
