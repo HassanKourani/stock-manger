@@ -1,7 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { Button, Table, TableColumnsType, TablePaginationConfig } from "antd";
 import FilterDropdown from "../components/FilterDropdown";
-import { getLocations, getMaterials, getStock } from "../utils/stock";
+import {
+  getLocations,
+  getMaterials,
+  getStockDependingOnArea,
+} from "../utils/stock";
 import { Stock } from "../utils/types";
 import { useNavigate, useSearchParams } from "react-router";
 import AddSheetComponent from "../components/AddSheetComponent";
@@ -67,7 +71,7 @@ const Home = () => {
     refetch: refetchStock,
   } = useQuery({
     queryKey: ["stock", queryParams],
-    queryFn: () => getStock(queryParams),
+    queryFn: () => getStockDependingOnArea(queryParams),
   });
 
   const formattedLocations = locations.map((location) => ({

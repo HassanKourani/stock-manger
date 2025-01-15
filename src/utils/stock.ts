@@ -20,6 +20,27 @@ export const getStock = async (params: Record<string, string>) => {
   return data || [];
 };
 
+export const getStockDependingOnArea = async (
+  params: Record<string, string>
+) => {
+  const query = supabase
+    .from("stock_with_area")
+    .select("*")
+    .order("area", { ascending: false })
+    .limit(100);
+
+  Object.entries(params).forEach(([key, value]) => {
+    if (value) {
+      query.eq(key, value);
+    }
+  });
+
+  const { data, error } = await query;
+  if (error) throw new Error(error.message);
+
+  return data || [];
+};
+
 export async function getLocations(): Promise<Location[]> {
   const { data } = (await supabase.from("Loc").select()) as {
     data: Location[];
@@ -124,4 +145,21 @@ export const deleteMaterial = async (id: string) => {
   const { data, error } = await supabase.from("Type").delete().eq("id", id);
   if (error) throw new Error(error.message);
   return data;
+};
+
+export const getStockSummary = async (params: Record<string, string>) => {
+  const query = supabase
+    .from("stock_summary_view")
+    .select("*")
+    .order("total_qty", { ascending: false });
+
+  Object.entries(params).forEach(([key, value]) => {
+    if (value) {
+      query.eq(key, value);
+    }
+  });
+
+  const { data, error } = await query;
+  if (error) throw new Error(error.message);
+  return data || [];
 };
