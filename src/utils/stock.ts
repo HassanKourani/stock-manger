@@ -151,7 +151,8 @@ export const getStockSummary = async (params: Record<string, string>) => {
   const query = supabase
     .from("stock_summary_view")
     .select("*")
-    .order("total_qty", { ascending: false });
+    .order("area", { ascending: false })
+    .limit(100);
 
   Object.entries(params).forEach(([key, value]) => {
     if (value) {

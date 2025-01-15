@@ -1,10 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import { Table, TableColumnsType } from "antd";
+import { Table, TableColumnsType, TablePaginationConfig } from "antd";
 import { FilterFilled } from "@ant-design/icons";
 import { useSearchParams } from "react-router";
 import FilterDropdown from "../components/FilterDropdown";
 import { getMaterials, getStockSummary } from "../utils/stock";
-import { StyledContainer } from "./Home";
+import { StyledButtonContainer, StyledContainer } from "./Home";
+import { FilterValue } from "antd/es/table/interface";
+import ResetFilterButton from "../components/ResetFilterButton";
 
 interface StockSummary {
   type_id: number;
@@ -15,15 +17,20 @@ interface StockSummary {
 }
 
 const Summary = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const queryParams = Object.fromEntries(searchParams.entries());
 
   const { data: materials = [], isLoading: isLoadingMaterials } = useQuery({
     queryKey: ["materials"],
     queryFn: getMaterials,
   });
 
-  const { data: summary = [], isLoading: isLoadingSummary } = useQuery({
-    queryKey: ["stock-summary", searchParams],
+  const {
+    data: summary = [],
+    isLoading: isLoadingSummary,
+    refetch: refetchSummary,
+  } = useQuery({
+    queryKey: ["stock-summary", queryParams],
     queryFn: () => {
       const params: Record<string, string> = {};
       searchParams.forEach((value, key) => {
@@ -37,6 +44,20 @@ const Summary = () => {
     text: material.name,
     value: material.id ?? 0,
   }));
+
+  const handleTableChange = (
+    _: TablePaginationConfig,
+    filters: Record<string, FilterValue | null>
+  ) => {
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value?.[0]) {
+        searchParams.set(key, value[0].toString());
+      } else {
+        searchParams.delete(key);
+      }
+    });
+    setSearchParams(searchParams);
+  };
 
   const getFilteredValue = (key: string): React.Key[] => {
     const value = searchParams.get(key);
@@ -118,6 +139,9 @@ const Summary = () => {
 
   return (
     <StyledContainer>
+      <StyledButtonContainer>
+        <ResetFilterButton refetch={refetchSummary} />
+      </StyledButtonContainer>
       <Table
         columns={columns}
         dataSource={summary}
@@ -125,6 +149,7 @@ const Summary = () => {
         rowKey={(record) =>
           `${record.type_id}-${record.width}-${record.length}-${record.thickness}`
         }
+        onChange={handleTableChange}
         className="alternating-columns"
       />
     </StyledContainer>
